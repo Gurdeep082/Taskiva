@@ -49,7 +49,7 @@ export default function AIAssistant() {
     ]);
 
     try {
-      const res = await fetch("https://taskiva-2.onrender.com/api/ai/chat", {
+      const res = await fetch("https://taskiva-1.onrender.com/api/ai/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
