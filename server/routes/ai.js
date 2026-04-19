@@ -13,7 +13,7 @@ router.post("/chat", async (req, res) => {
     const { message } = req.body;
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash" // "gemini-1.5-pro" // "gemini-2.5-flash" is faster and cheaper, but less powerful
+      model: "gemini-1.5-flash" // "gemini-1.5-pro" // "gemini-2.5-flash" is faster and cheaper, but less powerful
     },{ apiVersion: "v1" });
 
     const prompt = `
