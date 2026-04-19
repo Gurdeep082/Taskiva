@@ -13,8 +13,8 @@ router.post("/chat", async (req, res) => {
     const { message } = req.body;
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash" // "gemini-1.5-pro" // "gemini-2.5-flash" is faster and cheaper, but less powerful
-    },{ apiVersion: "v1" });
+      model: "gemini-1.5-flash" // "gemini-1.5-pro" // "gemini-2.5-flash" is faster and cheaper, but less powerful
+    });
 
     const prompt = `
 You are TASKIVA AI assistant.
@@ -28,7 +28,7 @@ User: ${message}
 `;
 
     const result = await model.generateContent(prompt);
-    const reply = result.response.text();
+    const reply = result.response?.candidates?.[0]?.content?.parts?.[0]?.text ||"No response from AI";
 
     res.json({ reply });
 
