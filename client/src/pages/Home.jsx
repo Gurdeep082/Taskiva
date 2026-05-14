@@ -221,7 +221,7 @@ const Home = ({ setView }) => {
 
             <div className="serviceitem">
               <h2>Browse more Services</h2>
-              <p>hjkl</p>
+              <p>Coming Soon</p>
             </div>
           </div>
 
