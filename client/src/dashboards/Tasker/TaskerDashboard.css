@@ -1,0 +1,484 @@
+.tasker-dashboard {
+  min-height: 100vh;
+  padding: 28px;
+  color: #172033;
+  background: #eef4f8;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.tasker-dashboard button {
+  font: inherit;
+}
+
+.tasker-dashboard__hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #12344d, #1f5f70);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(18, 52, 77, 0.18);
+}
+
+.tasker-dashboard__eyebrow {
+  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.tasker-dashboard__hero h1 {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.15;
+}
+
+.tasker-dashboard__hero p:last-child {
+  max-width: 720px;
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.5;
+}
+
+.tasker-dashboard__actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.tasker-dashboard__actions button,
+.tasker-button {
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 800;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.tasker-dashboard__actions button {
+  padding: 10px 16px;
+  color: #12344d;
+  background: #ffffff;
+}
+
+.tasker-dashboard__actions .tasker-dashboard__logout {
+  color: #ffffff;
+  background: rgba(15, 23, 42, 0.86);
+}
+
+.tasker-dashboard__actions button:hover,
+.tasker-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.16);
+}
+
+.tasker-dashboard__notice,
+.tasker-panel,
+.tasker-stat-card {
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07);
+}
+
+.tasker-dashboard__notice {
+  margin-top: 16px;
+  padding: 12px 16px;
+  color: #0f766e;
+  font-weight: 800;
+  border-radius: 12px;
+}
+
+.tasker-dashboard__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.tasker-dashboard__grid--wide {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+}
+
+.tasker-panel {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 16px;
+}
+
+.tasker-dashboard__grid .tasker-panel {
+  margin-top: 0;
+}
+
+.tasker-panel__header {
+  margin-bottom: 14px;
+}
+
+.tasker-panel__header h2 {
+  margin: 0;
+  color: #12344d;
+  font-size: 20px;
+}
+
+.tasker-panel__header p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.tasker-apply {
+  display: grid;
+  gap: 12px;
+}
+
+.tasker-apply label {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.tasker-apply input {
+  width: auto;
+  margin: 4px 0 0;
+}
+
+.tasker-apply strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #172033;
+}
+
+.tasker-apply span {
+  color: #64748b;
+  line-height: 1.45;
+}
+
+.tasker-locked-type {
+  padding: 12px 14px;
+  color: #12344d;
+  background: #e0f2fe;
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.tasker-profile-form {
+  display: grid;
+  gap: 10px;
+}
+
+.tasker-dashboard .tasker-profile-form input {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 11px 12px;
+  color: #172033;
+  background: #ffffff;
+  border: 1px solid #d8e2eb;
+  border-radius: 10px;
+  outline: 0;
+}
+
+.tasker-dashboard .tasker-profile-form input:focus {
+  border-color: #1f5f70;
+  box-shadow: 0 0 0 3px rgba(31, 95, 112, 0.14);
+}
+
+.tasker-button {
+  padding: 10px 13px;
+  color: #ffffff;
+}
+
+.tasker-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.tasker-button--primary {
+  background: #2563eb;
+}
+
+.tasker-button--success {
+  width: 100%;
+  margin-top: 14px;
+  background: #16a34a;
+}
+
+.tasker-status-card {
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.tasker-profile-card {
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.tasker-profile-card h3 {
+  margin: 0 0 12px;
+  color: #172033;
+}
+
+.tasker-profile-card dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.tasker-profile-card dt {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.tasker-profile-card dd {
+  margin: 3px 0 0;
+  color: #12344d;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.tasker-status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.tasker-status--approved {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.tasker-status--pending {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.tasker-status--rejected {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.tasker-status-card h3 {
+  margin: 14px 0 6px;
+  color: #172033;
+}
+
+.tasker-status-card p {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.tasker-dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.tasker-stat-card {
+  padding: 18px;
+  border-radius: 14px;
+}
+
+.tasker-stat-card span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.tasker-stat-card strong {
+  display: block;
+  margin-top: 10px;
+  color: #12344d;
+  font-size: 28px;
+}
+
+.tasker-salary {
+  display: grid;
+  gap: 10px;
+}
+
+.tasker-salary div,
+.tasker-request,
+.tasker-day {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.tasker-salary div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px;
+}
+
+.tasker-salary span,
+.tasker-request span,
+.tasker-day small {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.tasker-salary strong,
+.tasker-request strong,
+.tasker-day strong,
+.tasker-day em {
+  color: #12344d;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.tasker-requests,
+.tasker-daily-list {
+  display: grid;
+  gap: 10px;
+}
+
+.tasker-request {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+}
+
+.tasker-request h3 {
+  margin: 4px 0;
+  color: #172033;
+}
+
+.tasker-request p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.tasker-request__side {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+.tasker-day {
+  display: grid;
+  grid-template-columns: 54px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+}
+
+.tasker-day > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  color: #0f766e;
+  font-weight: 900;
+  background: #ccfbf1;
+  border-radius: 12px;
+}
+
+.tasker-day strong {
+  display: block;
+  font-size: 22px;
+}
+
+.tasker-empty {
+  margin: 0;
+  color: #64748b;
+}
+
+@media (max-width: 720px) {
+  .tasker-dashboard {
+    padding: 14px;
+  }
+
+  .tasker-dashboard__hero {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .tasker-dashboard__hero h1 {
+    font-size: 25px;
+  }
+
+  .tasker-dashboard__hero p:last-child {
+    font-size: 14px;
+  }
+
+  .tasker-dashboard__actions {
+    width: 100%;
+  }
+
+  .tasker-dashboard__actions button {
+    flex: 1;
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+
+  .tasker-dashboard__grid,
+  .tasker-dashboard__grid--wide {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .tasker-panel {
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .tasker-panel__header h2 {
+    font-size: 18px;
+  }
+
+  .tasker-dashboard__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .tasker-stat-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .tasker-stat-card strong {
+    font-size: 22px;
+  }
+
+  .tasker-request {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .tasker-request__side {
+    width: 100%;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+
+  .tasker-day {
+    grid-template-columns: 44px 1fr auto;
+    padding: 12px;
+  }
+}

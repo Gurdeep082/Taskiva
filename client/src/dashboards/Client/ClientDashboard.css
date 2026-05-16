@@ -1,0 +1,364 @@
+.client-dashboard {
+  min-height: 100vh;
+  padding: 28px;
+  color: #172033;
+  background: #eef4f8;
+  font-family: Arial, sans-serif;
+}
+
+.client-dashboard__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 24px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #12344d, #1f5f70);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(18, 52, 77, 0.18);
+}
+
+.client-dashboard__header h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.client-dashboard__header p {
+  margin: 8px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14px;
+}
+
+.client-dashboard__actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.client-dashboard__button {
+  padding: 10px 16px;
+  color: #ffffff;
+  font-weight: 700;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.client-dashboard__button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.16);
+}
+
+.client-dashboard__button--close {
+  background: #e84b4f;
+}
+
+.client-dashboard__button--logout {
+  background: rgba(15, 23, 42, 0.88);
+}
+
+.client-dashboard__summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.dashboard-card {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  color: #172033;
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+.dashboard-card::before {
+  content: "";
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 42px;
+  height: 42px;
+  background: var(--card-accent);
+  border-radius: 12px;
+  opacity: 0.16;
+}
+
+.dashboard-card h3 {
+  margin: 0 0 12px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.dashboard-card h1 {
+  margin: 0;
+  color: var(--card-accent);
+  font-size: 34px;
+  line-height: 1;
+}
+
+.dashboard-card--total {
+  --card-accent: #2563eb;
+}
+
+.dashboard-card--progress {
+  --card-accent: #d97706;
+}
+
+.dashboard-card--completed {
+  --card-accent: #16a34a;
+}
+
+.dashboard-card--pending {
+  --card-accent: #dc2626;
+}
+
+.client-dashboard__table-panel {
+  margin-top: 26px;
+  padding: 18px;
+  overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 16px;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+}
+
+.client-dashboard__table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.client-dashboard__table-header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 20px;
+}
+
+.client-dashboard__table-header p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.client-dashboard__table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+}
+
+.client-dashboard__table thead tr {
+  background: #f1f5f9;
+}
+
+.client-dashboard__table th {
+  width: 16.66%;
+  padding: 13px 12px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.client-dashboard__table th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.client-dashboard__table th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.client-dashboard__table td {
+  padding: 14px 12px;
+  color: #243044;
+  text-align: center;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.client-dashboard__table tbody tr {
+  transition: background 0.18s ease;
+}
+
+.client-dashboard__table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.client-dashboard__reschedule-column {
+  text-align: center;
+}
+
+.client-dashboard__tasker-column {
+  overflow-wrap: anywhere;
+}
+
+.client-dashboard .client-dashboard__date-input {
+  display: block;
+  width: 125px;
+  margin: 0 auto;
+  padding: 8px 10px;
+  color: #172033;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+.client-dashboard__status {
+  display: inline-block;
+  min-width: 86px;
+  padding: 6px 10px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+}
+
+.status-booked {
+  color: #713f12;
+  background: #fde68a;
+}
+
+.status-progress {
+  background: #2563eb;
+}
+
+.status-last-stage {
+  background: #7c3aed;
+}
+
+.status-completed {
+  background: #16a34a;
+}
+
+.status-default {
+  background: #64748b;
+}
+
+.client-dashboard__contact {
+  color: #0f766e;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.client-dashboard__contact:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .client-dashboard {
+    padding: 14px;
+  }
+
+  .client-dashboard__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .client-dashboard__header h1 {
+    font-size: 22px;
+  }
+
+  .client-dashboard__actions {
+    width: 100%;
+  }
+
+  .client-dashboard__button {
+    flex: 1;
+    padding: 10px 12px;
+  }
+
+  .client-dashboard__summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .dashboard-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .dashboard-card::before {
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .dashboard-card h3 {
+    margin: 0 0 8px;
+    font-size: 12px;
+  }
+
+  .dashboard-card h1 {
+    font-size: 24px;
+  }
+
+  .client-dashboard__table-panel {
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .client-dashboard__table-header {
+    margin-bottom: 12px;
+  }
+
+  .client-dashboard__table-header h2 {
+    font-size: 17px;
+  }
+
+  .client-dashboard__table-header p {
+    font-size: 12px;
+  }
+
+  .client-dashboard__table {
+    min-width: 720px;
+    font-size: 12px;
+  }
+
+  .client-dashboard__table th,
+  .client-dashboard__table td {
+    padding: 8px 6px;
+  }
+
+  .client-dashboard__reschedule-column {
+    width: 130px;
+  }
+
+  .client-dashboard__tasker-column {
+    width: 120px;
+  }
+
+  .client-dashboard .client-dashboard__date-input {
+    width: 104px;
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .client-dashboard__status {
+    min-width: 72px;
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .client-dashboard__contact {
+    font-size: 12px;
+  }
+}

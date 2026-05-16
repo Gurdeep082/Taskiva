@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { useAuth } from "../context/Authcontext";
 import logo from "../assets/logo.png";
-import { useState } from "react";
+import "./Home.css";
 
 const Home = ({ setView }) => {
   const { user } = useAuth();
@@ -16,6 +17,35 @@ const Home = ({ setView }) => {
     "Car Wash",
     "Pest Control",
     "Event Planning",
+  ];
+
+  const serviceCards = [
+    ["Cleaning", "Daily or weekly cleaning services for your home."],
+    ["Car Repairs", "Handyman services for repairs and maintenance."],
+    ["Gardening", "Lawn care and gardening services."],
+    ["Carpentry", "Custom carpentry and woodworking services."],
+    ["Cooking", "Private chef or meal preparation services."],
+    ["Painting", "Interior and exterior painting services."],
+    ["Plumbing", "Plumbing repairs and installations."],
+    ["Electrical", "Electrical repairs and installations."],
+    ["Car Wash", "Mobile car wash and detailing services."],
+    ["Event Planning", "Full-service event planning and coordination."],
+    ["Pest Control", "Pest removal and prevention services."],
+    ["Browse more Services", "Coming Soon"],
+  ];
+
+  const quickServices = [
+    "Cleaning",
+    "Plumbing Help",
+    "Gardening Services",
+    "Woodworking services",
+    "Electrical repairs",
+    "AutoMobile car wash",
+    "Pest removal",
+    "Event planning",
+    "Cooking",
+    "Car repairs",
+    "House Painting",
   ];
 
   const [query, setQuery] = useState("");
@@ -41,11 +71,24 @@ const Home = ({ setView }) => {
     setShowDropdown(true);
   };
 
-  return (
-    <>
-      {showForm ? (
-        /* ===== BOOKING FORM ===== */
-        <div className="booking-form">
+  const handleSearchSubmit = () => {
+    if (!query.trim()) return;
+
+    if (!user) {
+      localStorage.setItem("pendingTask", query);
+      setView("login");
+      return;
+    }
+
+    setSelectedTask(query);
+    setShowForm(true);
+    setShowDropdown(false);
+  };
+
+  if (showForm) {
+    return (
+      <div className="home-page home-page--form">
+        <div className="home-booking-form">
           <h2>Book Service</h2>
 
           <input value={selectedTask} readOnly />
@@ -53,63 +96,60 @@ const Home = ({ setView }) => {
           <input placeholder="Address" />
           <input type="date" />
 
-          <button onClick={() => alert("Task Booked!")}>
-            Confirm Booking
-          </button>
+          <div className="home-booking-form__actions">
+            <button onClick={() => alert("Task Booked!")}>
+              Confirm Booking
+            </button>
 
-          <button onClick={() => setShowForm(false)}>Back</button>
-        </div>
-      ) : (
-        <>
-          {/* NAVBAR */}
-          <nav
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "1rem",
-            }}
-            className="navbar"
-          >
-            <img src={logo} alt="logo" style={{ height: "40px" }} />
-
-            {!user && (
-              <div style={{ display:"flex",gap:"10px"}}><button onClick={() => setView("login")}>
-                  Login / Register
-                </button><button onClick={() => setView("tasker-register")}>
-                  Become a Tasker
-                </button></div>
-            )}
-
-            {user && user.role === "client" && (
-              <button onClick={() => setView("client")}>
-                Client Dashboard
-              </button>
-            )}
-
-            {user && user.role === "tasker" && (
-              <button onClick={() => setView("tasker")}>
-                Tasker Dashboard
-              </button>
-            )}
-
-            {user && user.role === "admin" && (
-              <button onClick={() => setView("admin")}>
-                Admin Dashboard
-              </button>
-            )}
-          </nav>
-
-          {/* HERO */}
-          <div className="back">
-            <section className="hero">
-              <h1>Book trusted help for home tasks</h1>
-            </section>
+            <button type="button" onClick={() => setShowForm(false)}>
+              Back
+            </button>
           </div>
+        </div>
+      </div>
+    );
+  }
 
-          {/* SEARCH */}
-          <div className="search">
-            <div className="search-inner" style={{ position: "relative" }}>
+  return (
+    <main className="home-page">
+      <nav className="home-nav">
+        <img className="home-nav__logo" src={logo} alt="Taskiva" />
+
+        <div className="home-nav__actions">
+          {!user && (
+            <>
+              <button onClick={() => setView("login")}>Login / Register</button>
+              <button onClick={() => setView("tasker-register")}>
+                Become a Tasker
+              </button>
+            </>
+          )}
+
+          {user && user.role === "client" && (
+            <button onClick={() => setView("client")}>Client Dashboard</button>
+          )}
+
+          {user && user.role === "tasker" && (
+            <button onClick={() => setView("tasker")}>Tasker Dashboard</button>
+          )}
+
+          {user && user.role === "admin" && (
+            <button onClick={() => setView("admin")}>Admin Dashboard</button>
+          )}
+        </div>
+      </nav>
+
+      <section className="home-hero">
+        <div className="home-hero__content">
+          <p className="home-hero__eyebrow">Trusted local services</p>
+          <h1>Book reliable help for everyday home tasks.</h1>
+          <p>
+            Find cleaners, plumbers, electricians, cooks, and more with a fast
+            booking flow built for busy homes.
+          </p>
+
+          <div className="home-search">
+            <div className="home-search__inner">
               <input
                 value={query}
                 onChange={(e) => handleSearch(e.target.value)}
@@ -117,184 +157,96 @@ const Home = ({ setView }) => {
                 placeholder="Search tasks..."
               />
 
-              <button
-                onClick={() => {
-                  if (!query.trim()) return;
-
-                  if (!user) {
-                    localStorage.setItem("pendingTask", query);
-                    setView("login");
-                    return;
-                  }
-
-                  setSelectedTask(query);
-                  setShowForm(true);
-                  setShowDropdown(false);
-                }}
-              >
-                Search
-              </button>
+              <button onClick={handleSearchSubmit}>Search</button>
 
               {showDropdown && results.length > 0 && (
-                <div className="search-dropdown">
-                  {results.map((item, i) => (
-                    <div
-                      key={i}
-                      className="dropdown-item"
+                <div className="home-search__dropdown">
+                  {results.map((item) => (
+                    <button
+                      key={item}
+                      type="button"
                       onClick={() => {
                         setQuery(item);
                         setShowDropdown(false);
                       }}
                     >
-                      🔍 {item}
-                    </div>
+                      {item}
+                    </button>
                   ))}
                 </div>
               )}
             </div>
           </div>
+        </div>
 
-          <div className="empty"></div>
+        <div className="home-hero__panel">
+          <span>Fast booking</span>
+          <strong>10+</strong>
+          <p>service categories ready to explore</p>
+        </div>
+      </section>
 
-          {/* SERVICES */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            }}
-            className="houseservices"
-          >
-            <div className="serviceitem">
-              <h2>Cleaning</h2>
-              <p>Daily or weekly cleaning services for your home.</p>
-            </div>
+      <section className="home-section">
+        <div className="home-section__header">
+          <h2>Popular Services</h2>
+          <p>Choose what you need and schedule it in a few clicks.</p>
+        </div>
 
-            <div className="serviceitem">
-              <h2>Car Repairs</h2>
-              <p>Handyman services for repairs and maintenance.</p>
-            </div>
+        <div className="home-services">
+          {serviceCards.map(([title, description]) => (
+            <article className="home-service-card" key={title}>
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
 
-            <div className="serviceitem">
-              <h2>Gardening</h2>
-              <p>Lawn care and gardening services.</p>
-            </div>
+      <section className="home-how">
+        <div className="home-section__header">
+          <h2>How it works</h2>
+          <p>Simple steps from search to completed service.</p>
+        </div>
 
-            <div className="serviceitem">
-              <h2>Carpentry</h2>
-              <p>Custom carpentry and woodworking services.</p>
-            </div>
+        <ol className="home-steps">
+          <li>
+            <span>01</span>
+            <h3>Choose a Tasker</h3>
+            <p>
+              Browse skilled Taskers and choose the one that fits your needs.
+            </p>
+          </li>
 
-            <div className="serviceitem">
-              <h2>Cooking</h2>
-              <p>Private chef or meal preparation services.</p>
-            </div>
+          <li>
+            <span>02</span>
+            <h3>Schedule a Tasker</h3>
+            <p>Pick a date and time that works for your home.</p>
+          </li>
 
-            <div className="serviceitem">
-              <h2>Painting</h2>
-              <p>Interior and exterior painting services.</p>
-            </div>
+          <li>
+            <span>03</span>
+            <h3>Chat, Pay, and Review</h3>
+            <p>Manage the service from one simple place.</p>
+          </li>
+        </ol>
+      </section>
 
-            <div className="serviceitem">
-              <h2>Plumbing</h2>
-              <p>Plumbing repairs and installations.</p>
-            </div>
+      <section className="home-help">
+        <h2>Get Help Today</h2>
+        <div className="home-service-tags">
+          {quickServices.map((service) => (
+            <button key={service}>{service}</button>
+          ))}
+        </div>
+      </section>
 
-            <div className="serviceitem">
-              <h2>Electrical</h2>
-              <p>Electrical repairs and installations.</p>
-            </div>
+      <section className="home-trust">
+        <h3>Trusted Services. Guaranteed Satisfaction.</h3>
+      </section>
 
-            <div className="serviceitem">
-              <h2>Car Wash</h2>
-              <p>Mobile car wash and detailing services.</p>
-            </div>
-
-            <div className="serviceitem">
-              <h2>Event Planning</h2>
-              <p>Full-service event planning and coordination.</p>
-            </div>
-
-            <div className="serviceitem">
-              <h2>Pest Control</h2>
-              <p>Pest removal and prevention services.</p>
-            </div>
-
-            <div className="serviceitem">
-              <h2>Browse more Services</h2>
-              <p>hjkl</p>
-            </div>
-          </div>
-
-          {/* WORKING */}
-          <div className="working">
-            <div className="bg">
-              <div className="picture">
-                <img src="" alt="" />
-              </div>
-
-              <div id="howitworks">
-                <h2>How it works</h2>
-                <ol>
-                  <li>
-                    <h3>Choose a Tasker</h3>
-                    <p>
-                      Browse our marketplace of skilled Taskers and choose the one
-                      that fits your needs and budget.
-                    </p>
-                  </li>
-
-                  <li>
-                    <h3>Schedule a Tasker</h3>
-                    <p>Schedule your Tasker for a time that works for you.</p>
-                  </li>
-
-                  <li>
-                    <h3>Chat, Pay, and Review</h3>
-                    <p>Chat with your Tasker, pay, and review in one place.</p>
-                  </li>
-                </ol>
-              </div>
-            </div>
-          </div>
-
-          {/* HELP */}
-          <div id="help">
-            <h2>Get Help Today</h2>
-          </div>
-
-          {/* BUTTONS */}
-          <div className="serve">
-            <button>Cleaning</button>
-            <button>Plumbing Help</button>
-            <button>Gardening Services</button>
-            <button>Woodworking services</button>
-            <button>Electrical repairs</button>
-            <button>AutoMobile car wash</button>
-            <button>Pest removal</button>
-            <button>Event planning</button>
-            <button>Cooking</button>
-            <button>Car repairs</button>
-            <button>House Painting</button>
-          </div>
-
-          {/* TRUST */}
-          <div className="container">
-            <h3>Trusted Services. Guaranteed Satisfaction.</h3>
-          </div>
-
-          {/* FOOTER */}
-          <footer
-            style={{
-              textAlign: "center",
-              padding: "1rem",
-              marginTop: "2rem",
-            }}
-          >
-            © 2024 Taskiva. All rights reserved.
-          </footer>
-        </>
-      )}
-    </>
+      <footer className="home-footer">© 2024 Taskiva. All rights reserved.</footer>
+    </main>
   );
 };
+
 export default Home;
