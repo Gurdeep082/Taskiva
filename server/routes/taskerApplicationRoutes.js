@@ -1,6 +1,6 @@
 import express from "express";
 import TaskerApplication from "../models/TaskerApplication.js";
-import Tasker from "../models/User.js";
+import Tasker from "../models/Tasker.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();

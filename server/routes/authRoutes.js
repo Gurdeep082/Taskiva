@@ -1,7 +1,8 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import Tasker from "../models/User.js";
+import Tasker from "../models/Tasker.js";
+import User from "../models/User.js";
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ const ADMIN_EMAIL = "admin@taskiva.com";
 const ADMIN_PASSWORD = "admin@903460";
 
 
-// ================= REGISTER =================
+// =================Tasker REGISTER =================
 router.post("/register", async (req, res) => {
   const {
     name,
@@ -23,10 +24,10 @@ router.post("/register", async (req, res) => {
   } = req.body;
 
   try {
-    // Check existing user
-    const existingUser = await Tasker.findOne({ email });
+    // Check existing tsker
+    const existingTasker = await Tasker.findOne({ email });
 
-    if (existingUser) {
+    if (existingTasker) {
       return res.status(400).json({
         message: "User already exists",
       });
@@ -35,16 +36,29 @@ router.post("/register", async (req, res) => {
     // Hash password
     const hashed = await bcrypt.hash(password, 10);
 
-    // Create user
-    const user = await Tasker.create({
-      name,
-      email,
-      phone,
-      address,
-      aadhaar,
-      password: hashed,
-      role,
-    });
+    let user;
+
+    if (role === "tasker") {
+
+      user = await Tasker.create({
+        name,
+        email,
+        phone,
+        address,
+        aadhaar,
+        password: hashed,
+        role,
+      });
+
+    } else {
+
+      user = await User.create({
+        name,
+        email,
+        password: hashed,
+        role,
+      });
+    }
 
     // Generate JWT
     const token = jwt.sign(
@@ -119,13 +133,17 @@ router.post("/login", async (req, res) => {
     }
 
     // Find user
-    const user = await User.findOne({ email });
+    let user =
+      await User.findOne({ email }) ||
+      await Tasker.findOne({ email });
 
     if (!user) {
       return res.status(404).json({
         message: "User not found",
       });
     }
+
+
 
     // Check password
     const match = await bcrypt.compare(password, user.password);
