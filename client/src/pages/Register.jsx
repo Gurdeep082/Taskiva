@@ -8,28 +8,40 @@ function Register({ setView }) {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("client");
 const [showPassword, setShowPassword] = useState(false);
-  const handleRegister = async () => {
-    try {
-      const res = await fetch("https://taskiva-1.onrender.com/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password, role }),
-      });
+ 
+const handleRegister = async (e) => {
+  e.preventDefault();
 
-      const data = await res.json();
+  if (!name || !email || !password) {
+    alert("Please fill all fields");
+    return;
+  }
 
-      if (res.ok) {
-        alert("Registered successfully ✅");
-        setView("login"); // 🔥 go back to login
-      } else {
-        alert(data.message);
-      }
-    } catch {
-      alert("Error registering");
+  try {
+    const res = await fetch("https://taskiva-1.onrender.com/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Registered successfully ✅");
+      setView("login");
+    } else {
+      alert(data.message);
     }
-  };
+  } catch {
+    alert("Error registering");
+  }
+};
 
   return (
     <div className="login-wrapper">
