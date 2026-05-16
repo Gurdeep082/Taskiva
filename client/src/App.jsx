@@ -1,14 +1,13 @@
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import TaskerRegister from "./pages/TaskerRegister";
 import { AuthProvider } from "./context/Authcontext";
-
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
-import Admin  from "./dashboards/Admin/Admindashboard";
+import Admin from "./dashboards/Admin/Admindashboard";
 import Client from "./dashboards/Client/ClientDashboard";
 import Tasker from "./dashboards/Tasker/TaskerDashboard";
 
@@ -18,8 +17,11 @@ function App() {
   const [view, setView] = useState("home");
   const [fade, setFade] = useState(true);
 
+
+
   const changeView = (newView) => {
     setFade(false);
+
     setTimeout(() => {
       setView(newView);
       setFade(true);
@@ -29,6 +31,8 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+  
+
         <Routes>
           <Route
             path="/"
@@ -39,14 +43,14 @@ function App() {
                 ) : view === "register" ? (
                   <Register setView={changeView} />
                 ) : view === "admin" ? (
-                  <Admin  setView={changeView} />
+                  <Admin setView={changeView} />
                 ) : view === "client" ? (
                   <Client setView={changeView} />
                 ) : view === "tasker" ? (
                   <Tasker setView={changeView} />
-                ) : view === "tasker-register" ? (   
+                ) : view === "tasker-register" ? (
                   <TaskerRegister setView={changeView} />
-                ): (
+                ) : (
                   <Home setView={changeView} />
                 )}
               </div>

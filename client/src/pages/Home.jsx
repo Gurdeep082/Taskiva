@@ -1,7 +1,9 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/Authcontext";
 import logo from "../assets/logo.png";
 import "./Home.css";
+import "../App.css"
 
 const Home = ({ setView }) => {
   const { user } = useAuth();
@@ -53,6 +55,19 @@ const Home = ({ setView }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [selectedTask, setSelectedTask] = useState("");
+  const [darkMode, setDarkMode] = useState(() => {
+  return localStorage.getItem("theme") === "dark";
+});
+
+useEffect(() => {
+  if (darkMode) {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  }
+}, [darkMode]);
 
   const handleSearch = (value) => {
     setQuery(value);
@@ -122,21 +137,55 @@ const Home = ({ setView }) => {
               <button onClick={() => setView("tasker-register")}>
                 Become a Tasker
               </button>
+              <button
+                className="theme-toggle"
+                onClick={() => setDarkMode(!darkMode)}
+              >
+                {darkMode ? "☀️" : "🌙"}
+              </button>
+              
+
             </>
           )}
 
           {user && user.role === "client" && (
+            <>
             <button onClick={() => setView("client")}>Client Dashboard</button>
+            <button
+                className="theme-toggle"
+                onClick={() => setDarkMode(!darkMode)}
+              >
+                {darkMode ? "☀️" : "🌙"}
+              </button>
+              </>
+            
           )}
 
           {user && user.role === "tasker" && (
+            <>
             <button onClick={() => setView("tasker")}>Tasker Dashboard</button>
+            <button
+                className="theme-toggle"
+                onClick={() => setDarkMode(!darkMode)}
+              >
+                {darkMode ? "☀️" : "🌙"}
+              </button>
+              </>
           )}
 
           {user && user.role === "admin" && (
+            <>
             <button onClick={() => setView("admin")}>Admin Dashboard</button>
+              <button
+                className="theme-toggle"
+                onClick={() => setDarkMode(!darkMode)}
+              >
+                {darkMode ? "☀️" : "🌙"}
+              </button>
+              </>
           )}
         </div>
+        
       </nav>
 
       <section className="home-hero">

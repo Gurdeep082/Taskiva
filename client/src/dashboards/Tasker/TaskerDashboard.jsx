@@ -232,7 +232,7 @@ const Tasker = ({ setView }) => {
             className="tasker-dashboard__logout"
             onClick={() => {
               logout();
-              setView("home");
+              window.location.reload();
             }}
             type="button"
           >

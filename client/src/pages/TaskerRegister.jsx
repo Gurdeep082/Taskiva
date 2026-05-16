@@ -66,8 +66,11 @@ export default function TaskerRegister({ setView }) {
       <div className="login-card tasker-register-card">
         <h2>Become a Tasker</h2>
 
-        <button className="back-btn" onClick={() => setView("home")}>
-          Back
+        <button
+          className="back-btn"
+          onClick={() => setView("home")}
+        >
+          ← Back to Home
         </button>
 
         <input
