@@ -208,14 +208,59 @@ const Home = ({ setView }) => {
           <p>Simple steps from search to completed service.</p>
         </div>
 
-        <ol className="home-steps">
-          <li>
-            <span>01</span>
-            <h3>Choose a Tasker</h3>
-            <p>
-              Browse skilled Taskers and choose the one that fits your needs.
-            </p>
-          </li>
+            <div className="serviceitem">
+              <h2>Painting</h2>
+              <p>Interior and exterior painting services.</p>
+            </div>
+
+            <div className="serviceitem">
+              <h2>Plumbing</h2>
+              <p>Plumbing repairs and installations.</p>
+            </div>
+
+            <div className="serviceitem">
+              <h2>Electrical</h2>
+              <p>Electrical repairs and installations.</p>
+            </div>
+
+            <div className="serviceitem">
+              <h2>Car Wash</h2>
+              <p>Mobile car wash and detailing services.</p>
+            </div>
+
+            <div className="serviceitem">
+              <h2>Event Planning</h2>
+              <p>Full-service event planning and coordination.</p>
+            </div>
+
+            <div className="serviceitem">
+              <h2>Pest Control</h2>
+              <p>Pest removal and prevention services.</p>
+            </div>
+
+            <div className="serviceitem">
+              <h2>Browse more Services</h2>
+              <p>hjkl</p>
+            </div>
+          </div>
+
+          {/* WORKING */}
+          <div className="working">
+            <div className="bg">
+              <div className="picture">
+                <img src="" alt="" />
+              </div>
+
+              <div id="howitworks">
+                <h2>How it works</h2>
+                <ol>
+                  <li>
+                    <h3>Choose a Tasker</h3>
+                    <p>
+                      Browse our marketplace of skilled Taskers and choose the one
+                      that fits your needs and budget.
+                    </p>
+                  </li>
 
           <li>
             <span>02</span>
