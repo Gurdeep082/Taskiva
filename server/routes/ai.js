@@ -7,7 +7,7 @@ dotenv.config();
 const router = express.Router();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-console.log("KEY:", process.env.GEMINI_API_KEY);
+
 router.post("/chat", async (req, res) => {
   try {
     const { message } = req.body;

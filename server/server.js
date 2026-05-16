@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import aiRoutes from "./routes/ai.js";
+import taskerApplicationRoutes from "./routes/taskerApplicationRoutes.js";
 
 
 dotenv.config();
@@ -17,6 +18,7 @@ app.use("/api/ai", aiRoutes);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/tasker-applications", taskerApplicationRoutes);
 
 app.get("/", (req, res) => res.send("API running"));
 
