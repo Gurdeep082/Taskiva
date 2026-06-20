@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/Authcontext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import TaskBooking from "./pages/TaskBooking";
 import Admin from "./dashboards/Admin/Admindashboard";
 import Client from "./dashboards/Client/ClientDashboard";
 import Tasker from "./dashboards/Tasker/TaskerDashboard";
@@ -42,8 +43,12 @@ function App() {
                   <Login setView={changeView} />
                 ) : view === "register" ? (
                   <Register setView={changeView} />
+                ) : view === "task-booking" ? (
+                  <TaskBooking setView={changeView} />
                 ) : view === "admin" ? (
                   <Admin setView={changeView} />
+                ) : view === "client-dashboard" ? (
+                  <Client setView={changeView} />
                 ) : view === "client" ? (
                   <Client setView={changeView} />
                 ) : view === "tasker" ? (

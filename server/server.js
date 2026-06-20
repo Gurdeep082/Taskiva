@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import aiRoutes from "./routes/ai.js";
 import taskerApplicationRoutes from "./routes/taskerApplicationRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
 
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use("/api/ai", aiRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/tasker-applications", taskerApplicationRoutes);
+app.use("/api/tasks", taskRoutes);
 
 app.get("/", (req, res) => res.send("API running"));
 

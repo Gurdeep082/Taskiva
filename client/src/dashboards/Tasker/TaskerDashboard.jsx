@@ -3,7 +3,7 @@ import { useAuth } from "../../context/Authcontext";
 import "./TaskerDashboard.css";
 
 const API_BASE =
-  process.env.REACT_APP_API_URL || "https://taskiva-1.onrender.com/api";
+  process.env.REACT_APP_API_URL || "http://localhost:5000     https://taskiva-1.onrender.com/api";
 
 const taskRequests = [
   {
@@ -56,9 +56,13 @@ const Tasker = ({ setView }) => {
     aadhaar: user?.aadhaar || "",
   });
   const [acceptedRequests, setAcceptedRequests] = useState([]);
+  const [availableTasks, setAvailableTasks] = useState([]);
+  const [assignedTasks, setAssignedTasks] = useState([]);
   const [walletBalance, setWalletBalance] = useState(18500);
   const [notice, setNotice] = useState("Apply to unlock tasker earnings tools");
+  const [loadingTasks, setLoadingTasks] = useState(false);
 
+  // Define computed values before useEffect
   const isApproved =
     approvalStatus === "approved_permanent" ||
     approvalStatus === "approved_freelance";
@@ -69,9 +73,36 @@ const Tasker = ({ setView }) => {
   const taskerType =
     applicationType === "permanent" ? "Permanent Tasker" : "Freelancer";
 
-  const visibleRequests = taskRequests.filter(
-    (request) => !acceptedRequests.includes(request.id)
-  );
+  // Fetch available tasks from backend
+  useEffect(() => {
+    const fetchTasks = async () => {
+      if (!user?.token || !isApproved) return;
+
+      try {
+        setLoadingTasks(true);
+        const res = await fetch(`${API_BASE}/dashboard/tasker`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          setAvailableTasks(data.availableTasks || []);
+          setAssignedTasks(data.assignedTasks || []);
+        }
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        setLoadingTasks(false);
+      }
+    };
+
+    fetchTasks();
+    // Poll for new tasks every 15 seconds
+    const interval = setInterval(fetchTasks, 15000);
+    return () => clearInterval(interval);
+  }, [user?.token, isApproved]);
 
   const taskerProfile = {
     ...profileForm,
@@ -145,21 +176,12 @@ const Tasker = ({ setView }) => {
   }, [user?.token]);
 
   const stats = useMemo(() => {
-    const totalCompleted = completedTasks.reduce(
-      (total, item) => total + item.completed,
-      0
-    );
-    const weeklyEarnings = completedTasks.reduce(
-      (total, item) => total + item.earnings,
-      0
-    );
-
     return {
-      totalCompleted,
-      weeklyEarnings,
-      pendingRequests: visibleRequests.length,
+      totalCompleted: assignedTasks.filter((t) => t.status === "completed").length,
+      weeklyEarnings: assignedTasks.reduce((sum, t) => sum + (t.budget || 0), 0),
+      pendingRequests: availableTasks.length,
     };
-  }, [visibleRequests.length]);
+  }, [availableTasks.length, assignedTasks]);
 
   const handleProfileChange = (e) => {
     setProfileForm({ ...profileForm, [e.target.name]: e.target.value });
@@ -202,9 +224,35 @@ const Tasker = ({ setView }) => {
     }
   };
 
-  const acceptRequest = (request) => {
-    setAcceptedRequests((current) => [...current, request.id]);
-    setNotice(`${request.service} accepted`);
+  const acceptRequest = async (task) => {
+    if (!user?.token) {
+      setNotice("Please login again");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/tasks/${task._id}/accept`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setNotice(`✓ ${task.service} accepted successfully`);
+        // Refresh tasks list
+        setAvailableTasks((prev) =>
+          prev.filter((t) => t._id !== task._id)
+        );
+        setAssignedTasks((prev) => [...prev, data.task]);
+      } else {
+        setNotice(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      setNotice(`Error accepting task: ${error.message}`);
+    }
   };
 
   const withdraw = () => {
@@ -441,20 +489,22 @@ const Tasker = ({ setView }) => {
               subtitle="Accept work that matches your profile"
             >
               <div className="tasker-requests">
-                {visibleRequests.length === 0 ? (
+                {loadingTasks ? (
+                  <p className="tasker-empty">Loading available tasks...</p>
+                ) : availableTasks.length === 0 ? (
                   <p className="tasker-empty">No new task requests.</p>
                 ) : (
-                  visibleRequests.map((request) => (
-                    <article className="tasker-request" key={request.id}>
+                  availableTasks.map((request) => (
+                    <article className="tasker-request" key={request._id}>
                       <div>
-                        <span>{request.id}</span>
+                        <span>{request.customId || request._id.substring(0, 8)}</span>
                         <h3>{request.service}</h3>
                         <p>
-                          {request.client} - {request.location} - {request.date}
+                          {request.clientName} - {request.location} - {new Date(request.scheduledDate).toLocaleDateString()}
                         </p>
                       </div>
                       <div className="tasker-request__side">
-                        <strong>Rs. {request.pay.toLocaleString()}</strong>
+                        <strong>₹{request.budget?.toLocaleString()}</strong>
                         <button
                           className="tasker-button tasker-button--primary"
                           onClick={() => acceptRequest(request)}

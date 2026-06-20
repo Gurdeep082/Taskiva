@@ -143,6 +143,22 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    // Block banned/deleted taskers from logging in
+    if (
+      user.role === "tasker" &&
+      (
+        user.taskerApprovalStatus === "banned" ||
+        user.taskerApprovalStatus === "deleted" ||
+        user.isActive === false
+      )
+    ) {
+      return res.status(403).json({
+        message:
+          user.accountMessage ||
+          "Your account has been disabled by the administrator.",
+      });
+    }
+
 
 
     // Check password

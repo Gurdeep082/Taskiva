@@ -53,8 +53,6 @@ const Home = ({ setView }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showForm, setShowForm] = useState(false);
-  const [selectedTask, setSelectedTask] = useState("");
   const [darkMode, setDarkMode] = useState(() => {
   return localStorage.getItem("theme") === "dark";
 });
@@ -86,44 +84,22 @@ useEffect(() => {
     setShowDropdown(true);
   };
 
-  const handleSearchSubmit = () => {
-    if (!query.trim()) return;
+const handleSearchSubmit = () => {
+  if (!query.trim()) return;
 
-    if (!user) {
-      localStorage.setItem("pendingTask", query);
-      setView("login");
-      return;
-    }
-
-    setSelectedTask(query);
-    setShowForm(true);
-    setShowDropdown(false);
-  };
-
-  if (showForm) {
-    return (
-      <div className="home-page home-page--form">
-        <div className="home-booking-form">
-          <h2>Book Service</h2>
-
-          <input value={selectedTask} readOnly />
-          <input placeholder="Your Name" />
-          <input placeholder="Address" />
-          <input type="date" />
-
-          <div className="home-booking-form__actions">
-            <button onClick={() => alert("Task Booked!")}>
-              Confirm Booking
-            </button>
-
-            <button type="button" onClick={() => setShowForm(false)}>
-              Back
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+  if (!user) {
+    localStorage.setItem("pendingTask", query);
+    setView("login");
+    return;
   }
+
+  // Pass the selected service to TaskBooking
+  localStorage.setItem("selectedService", query);
+
+  // Open the real booking page
+  setView("task-booking");
+};
+
 
   return (
     <main className="home-page">

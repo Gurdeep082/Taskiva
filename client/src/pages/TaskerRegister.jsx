@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useAuth } from "../context/Authcontext";
 
-const API_URL = "https://taskiva-1.onrender.com/api/auth";
+const API_URL = "http://localhost:5000     https://taskiva-1.onrender.com/api/auth";
 
 export default function TaskerRegister({ setView }) {
   const { login } = useAuth();

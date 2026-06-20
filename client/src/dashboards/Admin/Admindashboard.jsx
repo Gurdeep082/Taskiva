@@ -3,7 +3,7 @@ import { useAuth } from "../../context/Authcontext";
 import "./AdminDashboard.css";
 
 const API_BASE =
-  process.env.REACT_APP_API_URL || "https://taskiva-1.onrender.com/api";
+  process.env.REACT_APP_API_URL || "http://localhost:5000     https://taskiva-1.onrender.com/api";
 
 const initialTaskers = [
   {
@@ -113,11 +113,62 @@ const transactions = [
 const Admin = ({ setView }) => {
   const { user, logout } = useAuth();
 
-  const [taskers, setTaskers] = useState(initialTaskers);
-  const [applications, setApplications] = useState(initialApplications);
-  const [selectedTaskerId, setSelectedTaskerId] = useState(initialTaskers[0].id);
+ const [taskers, setTaskers] = useState([]);
+const [applications, setApplications] = useState([]);
+  const [selectedTaskerId, setSelectedTaskerId] = useState("");
   const [notice, setNotice] = useState("Ready to review applications");
+  const [taskStats, setTaskStats] = useState({
+    totalTasks: 0,
+    bookedCount: 0,
+    inProgressCount: 0,
+    completedCount: 0,
+  });
+  
 
+useEffect(() => {
+  const loadTaskers = async () => {
+    if (!user?.token) return;
+
+    try {
+      const res = await fetch(
+        `${API_BASE}/tasker-applications/admin?status=approved`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setTaskers(
+          data.map((t) => ({
+            id: t._id, customId: t.customId,
+            name: t.name,
+            skill: t.type || "Tasker",
+            city: t.address || "",
+            status: "active",
+            rating: 0,
+            completedTasks: 0,
+            salaryDue: 0,
+            transactions: 0,
+            totalTransactionAmount: 0,
+          }))
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  loadTaskers();
+}, [user?.token]);
+useEffect(() => {
+  if (taskers.length > 0 && !selectedTaskerId) {
+    setSelectedTaskerId(taskers[0].id);
+  }
+}, [taskers, selectedTaskerId]);
   useEffect(() => {
     const loadApplications = async () => {
       if (!user?.token) return;
@@ -159,52 +210,39 @@ const Admin = ({ setView }) => {
       pendingApplications: applications.length,
       salaryDue,
       transactionTotal,
+      pendingTasks: taskStats.bookedCount,
+      inProgressTasks: taskStats.inProgressCount,
+      completedTasks: taskStats.completedCount,
+      totalTasks: taskStats.totalTasks,
     };
-  }, [applications.length, taskers]);
+  }, [applications.length, taskers, taskStats]);
 
-  const approveApplication = async (application) => {
-    let updatedApplication;
-
-    try {
-      updatedApplication = await updateApplicationStatus(
-        application,
-        "approved",
-        user?.token
-      );
-    } catch (error) {
-      setNotice(error.message);
-      return;
-    }
-
-    const newTasker = {
-      id:
-      updatedApplication?.customId ||
-      application.customId ||
-      "TSK-NEW",
-      name: application.name,
-      skill: application.skill,
-      city: application.city || application.address,
-      status: "active",
-      rating: 0,
-      completedTasks: 0,
-      salaryDue: 0,
-      transactions: 0,
-      totalTransactionAmount: 0,
-    };
-
-    setTaskers((current) =>
-      current.some((tasker) => tasker.id === newTasker.id)
-        ? current
-        : [newTasker, ...current]
+const approveApplication = async (application) => {
+  try {
+    await updateApplicationStatus(
+      application,
+      "approved",
+      user?.token
     );
-    setApplications((current) =>
-      current.filter(
-        (item) => getApplicationId(item) !== getApplicationId(application)
-      )
+
+    // Reload from server
+    const res = await fetch(
+      `${API_BASE}/tasker-applications/admin`,
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
     );
-    setSelectedTaskerId(newTasker.id);
-    setNotice(`${application.name} approved as a tasker`);
-  };
+
+    const data = await res.json();
+    setApplications(data);
+
+    setNotice(`${application.name} approved successfully`);
+  } catch (err) {
+    setNotice(err.message);
+  }
+};
 
   const rejectApplication = async (application) => {
     try {
@@ -222,28 +260,75 @@ const Admin = ({ setView }) => {
     setNotice(`${application.name}'s application was rejected`);
   };
 
-  const toggleBanTasker = (taskerId) => {
+const toggleBanTasker = async (taskerId) => {
+  try {
+    const res = await fetch(
+      `${API_BASE}/tasker-applications/admin/${taskerId}/ban`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+
     setTaskers((current) =>
       current.map((tasker) =>
         tasker.id === taskerId
-          ? {
-              ...tasker,
-              status: tasker.status === "banned" ? "active" : "banned",
-            }
+          ? { ...tasker, status: "banned" }
           : tasker
       )
     );
-    setNotice("Tasker access status updated");
-  };
 
-  const deleteTasker = (taskerId) => {
-    setTaskers((current) => {
-      const filtered = current.filter((tasker) => tasker.id !== taskerId);
-      setSelectedTaskerId(filtered[0]?.id || "");
-      return filtered;
-    });
-    setNotice(`${taskerId} permanently deleted`);
-  };
+    setNotice("Tasker banned successfully");
+  } catch (err) {
+    setNotice(err.message);
+  }
+};
+
+const deleteTasker = async (taskerId) => {
+  try {
+    const res = await fetch(
+     `${API_BASE}/tasker-applications/admin/${taskerId}/delete`,
+      {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+      }
+    );
+
+    const text = await res.text();
+    console.log(text);
+
+    let data = {};
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error(text);
+    }
+
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+
+    setTaskers((current) =>
+      current.filter((tasker) => tasker.id !== taskerId)
+    );
+
+    setSelectedTaskerId("");
+
+    setNotice("Tasker deleted successfully");
+  } catch (err) {
+    setNotice(err.message);
+  }
+};
 
   const sendSalary = (taskerId) => {
     const tasker = taskers.find((item) => item.id === taskerId);
@@ -294,6 +379,9 @@ const Admin = ({ setView }) => {
         <StatCard label="Total Taskers" value={stats.totalTaskers} />
         <StatCard label="Active Taskers" value={stats.activeTaskers} />
         <StatCard label="New Applications" value={stats.pendingApplications} />
+        <StatCard label="Pending Tasks" value={stats.pendingTasks} style={{color: "#ff6b6b"}} />
+        <StatCard label="In Progress Tasks" value={stats.inProgressTasks} />
+        <StatCard label="Completed Tasks" value={stats.completedTasks} style={{color: "#51cf66"}} />
         <StatCard label="Salary Due" value={`Rs. ${stats.salaryDue.toLocaleString()}`} />
         <StatCard
           label="Total Transactions"
@@ -312,7 +400,9 @@ const Admin = ({ setView }) => {
             {applications.length === 0 ? (
               <p className="admin-dashboard__empty">No pending applications.</p>
             ) : (
-              applications.map((application) => (
+              applications
+              .filter((application) => application.status === "pending")
+              .map((application) => (
                 <article
                   className="admin-application"
                   key={getApplicationId(application)}
@@ -368,7 +458,7 @@ const Admin = ({ setView }) => {
               >
                 <div>
                   <strong>{tasker.name}</strong>
-                  <span>{tasker.id}</span>
+                  <span>{tasker.customId}</span>
                 </div>
                 <em className={`admin-status admin-status--${tasker.status}`}>
                   {tasker.status}

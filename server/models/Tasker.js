@@ -59,15 +59,30 @@ const TaskerSchema = new mongoose.Schema(
 
     // Approval Status
     taskerApprovalStatus: {
-      type: String,
-      enum: ["not_applied", "pending", "approved", "rejected"],
-      default: "not_applied",
-    },
+  type: String,
+  enum: [
+    "not_applied",
+    "pending",
+    "approved",
+    "rejected",
+    "banned",
+    "deleted",
+  ],
+  default: "not_applied",
+},
 
     // Rejection Reason
     taskerRejectionMessage: {
-      type: String,
-      default: "",
+      
+      accountMessage: {
+        type: String,
+        default: "",
+      },
+
+      isActive: {
+        type: Boolean,
+        default: true,
+      },
     },
   },
   {
@@ -77,6 +92,7 @@ const TaskerSchema = new mongoose.Schema(
 
 // Auto-generate custom ID before saving
 // Auto-generate custom ID before saving
+
 TaskerSchema.pre("save", async function () {
 
   // Skip if custom ID already exists
@@ -100,5 +116,6 @@ TaskerSchema.pre("save", async function () {
   // Generate custom ID
   this.customId = `${prefix}-${1000 + count + 1}`;
 });
+
 
 export default mongoose.model("Tasker", TaskerSchema);

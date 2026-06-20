@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@capacitor/android": "^8.3.4",
+    "@capacitor/cli": "^8.3.4",
+    "@capacitor/core": "^8.3.4",
+    "@capacitor/splash-screen": "^8.0.1",
     "ajv": "^8.18.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -25,5 +29,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5"
   }
 }

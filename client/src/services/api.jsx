@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://taskiva-1.onrender.com/api",
+  baseURL: "http://localhost:5000     https://taskiva-1.onrender.com/api",
 });
 
 export default API;

@@ -1,65 +1,87 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../context/Authcontext";
 import "./ClientDashboard.css";
 
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000     https://taskiva-1.onrender.com/api";
+
 const Client = ({ setView }) => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+  const [tasks, setTasks] = useState([]);
+  const [stats, setStats] = useState({
+    totalTasks: 0,
+    bookedCount: 0,
+    inProgressCount: 0,
+    completedCount: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "AC Repair Service",
-      status: "Booked",
-      date: "2026-05-20",
-      tasker: "Rahul Sharma",
-      phone: "+91 9876543210",
-    },
-    {
-      id: 2,
-      title: "Home Cleaning",
-      status: "In Progress",
-      date: "2026-05-18",
-      tasker: "Aman Verma",
-      phone: "+91 9123456780",
-    },
-    {
-      id: 3,
-      title: "Plumbing Work",
-      status: "Last Stage",
-      date: "2026-05-16",
-      tasker: "Deepak Kumar",
-      phone: "+91 9988776655",
-    },
-    {
-      id: 4,
-      title: "Electric Repair",
-      status: "Completed",
-      date: "2026-05-10",
-      tasker: "Vikas Singh",
-      phone: "+91 9012345678",
-    },
-  ]);
+  // Fetch tasks from backend
+ useEffect(() => {
+  if (!user?.token) return;
 
-  const handleDateChange = (id, newDate) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, date: newDate } : task
-    );
-    setTasks(updatedTasks);
+  const fetchTasks = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/dashboard/client`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to load dashboard");
+      }
+
+      setTasks(data.tasks || []);
+      setStats(
+        data.stats || {
+          totalTasks: 0,
+          bookedCount: 0,
+          inProgressCount: 0,
+          completedCount: 0,
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  fetchTasks();
+
+  const interval = setInterval(fetchTasks, 2000);
+
+  return () => clearInterval(interval);
+}, [user]);
+
   const getStatusClass = (status) => {
-    switch (status) {
-      case "Booked":
-        return "status-booked";
-      case "In Progress":
-        return "status-progress";
-      case "Last Stage":
-        return "status-last-stage";
-      case "Completed":
-        return "status-completed";
-      default:
-        return "status-default";
-    }
+    const statusMap = {
+      booked: "status-booked",
+      accepted: "status-booked",
+      in_progress: "status-progress",
+      completed: "status-completed",
+      cancelled: "status-cancelled",
+    };
+    return statusMap[status] || "status-default";
+  };
+
+  const formatStatus = (status) => {
+    const statusDisplay = {
+      booked: "Booked",
+      accepted: "Accepted",
+      in_progress: "In Progress",
+      completed: "Completed",
+      cancelled: "Cancelled",
+    };
+    return statusDisplay[status] || status;
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString();
   };
 
   return (
@@ -90,28 +112,34 @@ const Client = ({ setView }) => {
         </div>
       </div>
 
+      {error && (
+        <div className="error-message" style={{ color: "red", padding: "10px", margin: "10px 0" }}>
+          ⚠️ {error}
+        </div>
+      )}
+
       <div className="client-dashboard__summary">
         <DashboardCard
           title="Total Tasks"
-          value={tasks.length}
+          value={stats.totalTasks || 0}
           colorClass="dashboard-card--total"
         />
 
         <DashboardCard
           title="In Progress"
-          value={tasks.filter((t) => t.status === "In Progress").length}
+          value={stats.inProgressCount || 0}
           colorClass="dashboard-card--progress"
         />
 
         <DashboardCard
           title="Completed"
-          value={tasks.filter((t) => t.status === "Completed").length}
+          value={stats.completedCount || 0}
           colorClass="dashboard-card--completed"
         />
 
         <DashboardCard
           title="Pending"
-          value={tasks.filter((t) => t.status !== "Completed").length}
+          value={stats.bookedCount || 0}
           colorClass="dashboard-card--pending"
         />
       </div>
@@ -120,68 +148,64 @@ const Client = ({ setView }) => {
         <div className="client-dashboard__table-header">
           <div>
             <h2>Task Monitoring</h2>
-            <p>{tasks.length} active service records</p>
+            <p>{tasks.length} active service records {loading && "(updating...)"}</p>
           </div>
         </div>
 
-        <table className="client-dashboard__table">
-          <thead>
-            <tr>
-              <th>Task</th>
-              <th>Status</th>
-              <th>Task Date</th>
-              <th className="client-dashboard__reschedule-column">
-                Reschedule
-              </th>
-              <th className="client-dashboard__tasker-column">Tasker</th>
-              <th>Contact</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {tasks.map((task) => (
-              <tr key={task.id}>
-                <td>{task.title}</td>
-
-                <td>
-                  <span
-                    className={`client-dashboard__status ${getStatusClass(
-                      task.status
-                    )}`}
-                  >
-                    {task.status}
-                  </span>
-                </td>
-
-                <td>{task.date}</td>
-
-                <td className="client-dashboard__reschedule-column">
-                  <input
-                    className="client-dashboard__date-input"
-                    type="date"
-                    value={task.date}
-                    onChange={(e) =>
-                      handleDateChange(task.id, e.target.value)
-                    }
-                  />
-                </td>
-
-                <td className="client-dashboard__tasker-column">
-                  {task.tasker}
-                </td>
-
-                <td>
-                  <a
-                    className="client-dashboard__contact"
-                    href={`tel:${task.phone}`}
-                  >
-                    {task.phone}
-                  </a>
-                </td>
+        {loading && tasks.length === 0 ? (
+          <p style={{ padding: "20px" }}>Loading your tasks...</p>
+        ) : tasks.length === 0 ? (
+          <p style={{ padding: "20px" }}>No tasks booked yet. Start by booking a service!</p>
+        ) : (
+          <table className="client-dashboard__table">
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Task Date</th>
+                <th>Budget</th>
+                <th className="client-dashboard__tasker-column">Assigned Tasker</th>
+                <th>Contact</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {tasks.map((task) => (
+                <tr key={task._id}>
+                  <td>{task.title}</td>
+
+                  <td>
+                    <span
+                      className={`client-dashboard__status ${getStatusClass(
+                        task.status
+                      )}`}
+                    >
+                      {formatStatus(task.status)}
+                    </span>
+                  </td>
+
+                  <td>{formatDate(task.scheduledDate)}</td>
+
+                  <td>₹{task.budget}</td>
+
+                  <td className="client-dashboard__tasker-column">
+                    {task.assignedTaskerName || "Awaiting Tasker"}
+                  </td>
+
+                  <td>
+                    {task.assignedTaskerName ? (
+                      <a className="client-dashboard__contact" href={`tel:${task.clientPhone}`}>
+                        {task.clientPhone || "N/A"}
+                      </a>
+                    ) : (
+                      "N/A"
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

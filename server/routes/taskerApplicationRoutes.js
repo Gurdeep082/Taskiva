@@ -60,7 +60,13 @@ router.post("/mine", protect(["tasker"]), async (req, res) => {
 });
 
 router.get("/admin", protect(["admin"]), async (req, res) => {
-  const applications = await TaskerApplication.find({ status: "pending" })
+  const filter = {};
+
+  if (req.query.status) {
+    filter.status = req.query.status;
+  }
+
+  const applications = await TaskerApplication.find(filter)
     .sort({ createdAt: -1 })
     .lean();
 
@@ -95,6 +101,39 @@ router.patch("/admin/:id", protect(["admin"]), async (req, res) => {
   }
 
   res.json({ application, user });
+});
+// Ban tasker
+router.patch("/admin/:id/ban", protect(["admin"]), async (req, res) => {
+  const tasker = await Tasker.findByIdAndUpdate(
+    req.params.id,
+    {
+      taskerApprovalStatus: "banned",
+      accountMessage: "Your account has been banned by the administrator.",
+      isActive: false,
+    },
+    { new: true }
+  );
+
+  res.json(tasker);
+});
+
+// Soft delete tasker
+router.delete("/admin/:id/delete", protect(["admin"]), async (req, res) => {
+  const tasker = await Tasker.findByIdAndDelete(req.params.id);
+
+  if (!tasker) {
+    return res.status(404).json({
+      message: "Tasker not found",
+    });
+  }
+
+  await TaskerApplication.deleteMany({
+    tasker: req.params.id,
+  });
+
+  res.json({
+    message: "Tasker deleted successfully",
+  });
 });
 
 export default router;

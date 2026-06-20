@@ -7,6 +7,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  phone: {
+    type: String,
+    default: "",
+  },
   password: String,
   role: {
     type: String,
