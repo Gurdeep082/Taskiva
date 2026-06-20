@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/Authcontext";
 import "./TaskBooking.css";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000     https://taskiva-1.onrender.com/api";
+const API_BASE = process.env.REACT_APP_API_URL || "https://taskiva-1.onrender.com/api";
 
 const TaskBooking = ({ setView, service }) => {
   const { user } = useAuth();

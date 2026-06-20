@@ -3,7 +3,7 @@ import { useAuth } from "../../context/Authcontext";
 import "./TaskerDashboard.css";
 
 const API_BASE =
-  process.env.REACT_APP_API_URL || "http://localhost:5000     https://taskiva-1.onrender.com/api";
+  process.env.REACT_APP_API_URL || "https://taskiva-1.onrender.com/api";
 
 const taskRequests = [
   {
