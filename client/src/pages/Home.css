@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  max-width: 1180px;
+  max-width: 1720px;
   margin: 0 auto;
   padding: 12px 0;
 }
@@ -61,7 +61,7 @@
   grid-template-columns: minmax(0, 1fr) 280px;
   gap: 24px;
   align-items: stretch;
-  max-width: 1180px;
+  max-width: 1720px;
   margin: 12px auto 0;
   padding: 42px;
   background: linear-gradient(135deg, #ffffffbb, #dceef2);
@@ -194,7 +194,7 @@
 .home-how,
 .home-help,
 .home-trust {
-  max-width: 1180px;
+  max-width: 1720px;
   margin: 26px auto 0;
 }
 
@@ -317,7 +317,7 @@
 }
 
 .home-footer {
-  max-width: 1180px;
+  max-width: 1720px;
   margin: 26px auto 0;
   padding: 18px 0;
   color: #64748b;
