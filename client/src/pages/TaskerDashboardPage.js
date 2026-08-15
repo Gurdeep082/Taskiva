@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api';
 
@@ -17,26 +17,28 @@ export default function TaskerDashboardPage() {
   const [availableTasks, setAvailableTasks] = useState([]);
   const [assignedTasks, setAssignedTasks] = useState([]);
 
-  const loadDashboard = async () => {
-    const token = localStorage.getItem('taskiva_token');
-    if (!token) {
-      navigate('/login');
-      return;
-    }
+const loadDashboard = useCallback(async () => {
+  const token = localStorage.getItem("taskiva_token");
 
-    try {
-      const result = await api.get('/dashboard/tasker', token);
-      setStats((prev) => result.stats || prev);
-      setAvailableTasks(result.availableTasks || []);
-      setAssignedTasks(result.assignedTasks || []);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  if (!token) {
+    navigate("/login");
+    return;
+  }
 
-  useEffect(() => {
-    loadDashboard();
-  }, [navigate]);
+  try {
+    const result = await api.get("/dashboard/tasker", token);
+
+    setStats((prev) => result.stats || prev);
+    setAvailableTasks(result.availableTasks || []);
+    setAssignedTasks(result.assignedTasks || []);
+  } catch (err) {
+    console.error(err);
+  }
+}, [navigate]);
+
+useEffect(() => {
+  loadDashboard();
+}, [loadDashboard]);
 
   const handleNav = (target) => {
     const section = document.getElementById(target);
