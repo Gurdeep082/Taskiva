@@ -3345,7 +3345,7 @@ export default function HomePage() {
         {/* Social */}
         <div className="mt-6 flex items-center gap-2.5">
           <a
-            href="#"
+            href="/"
             aria-label="Instagram"
             className="
               flex
@@ -3370,7 +3370,7 @@ export default function HomePage() {
           </a>
 
           <a
-            href="#"
+            href="/"
             aria-label="Facebook"
             className="
               flex
@@ -3395,7 +3395,7 @@ export default function HomePage() {
           </a>
 
           <a
-            href="#"
+            href="/"
             aria-label="LinkedIn"
             className="
               flex
@@ -3420,7 +3420,7 @@ export default function HomePage() {
           </a>
 
           <a
-            href="#"
+            href="/"
             aria-label="X"
             className="
               flex
@@ -3617,7 +3617,7 @@ export default function HomePage() {
         <ul className="mt-5 space-y-3">
           <li>
             <a
-              href="#"
+              href="/"
               className="
                 text-sm
                 font-medium
@@ -3632,7 +3632,7 @@ export default function HomePage() {
 
           <li>
             <a
-              href="#"
+              href="/"
               className="
                 text-sm
                 font-medium
@@ -3647,7 +3647,7 @@ export default function HomePage() {
 
           <li>
             <a
-              href="#"
+              href="/"
               className="
                 text-sm
                 font-medium
@@ -3662,7 +3662,7 @@ export default function HomePage() {
 
           <li>
             <a
-              href="#"
+              href="/"
               className="
                 text-sm
                 font-medium
@@ -3758,21 +3758,21 @@ export default function HomePage() {
 
       <div className="flex items-center gap-4">
         <a
-          href="#"
+          href="/"
           className="transition hover:text-[#6366F1]"
         >
           Privacy
         </a>
 
         <a
-          href="#"
+          href="/"
           className="transition hover:text-[#6366F1]"
         >
           Terms
         </a>
 
         <a
-          href="#"
+          href="/"
           className="transition hover:text-[#6366F1]"
         >
           Cookies
