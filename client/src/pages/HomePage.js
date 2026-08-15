@@ -95,8 +95,8 @@ export default function HomePage() {
             to="/"
             className="group flex items-center gap-3"
           >
-            <div className="flex h-11 w-11 items-center justify-center rounded-[14px] bg-[#172033] text-lg font-black text-white shadow-[0_8px_22px_rgba(23,32,51,0.16)] transition duration-200 group-hover:-translate-y-0.5">
-              T
+            <div className="flex h-11 w-11 items-center justify-center rounded-[14px]  text-lg font-black text-white shadow-[0_8px_22px_rgba(23,32,51,0.16)] transition duration-200 group-hover:-translate-y-0.5">
+              <img src="/taskivalogo.png" alt="Taskiva Logo" className="h-11 w-11" />
             </div>
 
             <div>
@@ -3315,7 +3315,7 @@ export default function HomePage() {
               shadow-[0_8px_20px_rgba(23,32,51,0.14)]
             "
           >
-            T
+            <img src="/taskivalogo.png" alt="Taskiva Logo" className="h-11 w-11" />
           </div>
 
           <div>

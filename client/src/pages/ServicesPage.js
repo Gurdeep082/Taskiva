@@ -92,7 +92,7 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-[#F7F8FC] text-[#172033]">
       <header className="mx-auto flex w-full max-w-[1780px] items-center justify-between gap-4 px-4 py-5 md:px-6 lg:px-8">
         <div className="flex items-center gap-3">
-          <div className="grid h-11 w-11 place-items-center rounded-2xl bg-[#172033] text-lg font-black text-white shadow-[0_12px_28px_rgba(23,32,51,0.22)]">T</div>
+          <div className="grid h-11 w-11 place-items-center rounded-2xl text-lg font-black text-white shadow-[0_12px_28px_rgba(23,32,51,0.22)]"><img src="/taskivalogo.png" alt="Taskiva Logo" className="h-11 w-11" /></div>
           <div>
             <div className="text-lg font-black tracking-[-0.04em] text-[#172033]">Taskiva</div>
             <div className="text-[11px] text-[#596275]">Browse all services</div>

@@ -96,7 +96,7 @@ export default function BookingPage() {
     <div className="min-h-screen bg-[linear-gradient(180deg,#f4f7ff_0%,#edf4ff_100%)] pb-16">
       <header className="mx-auto flex w-full max-w-[1780px] items-center justify-between gap-5 px-4 pt-6 pb-4 md:px-6 lg:px-8">
         <div className="flex items-center gap-3">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#2563eb] to-[#1d4ed8] text-lg font-extrabold text-white shadow-lg shadow-blue-900/20">T</div>
+          <div className="grid h-11 w-11 place-items-center rounded-xl  text-lg font-extrabold text-white shadow-lg shadow-blue-900/20"><img src="/taskivalogo.png" alt="Taskiva Logo" className="h-11 w-11" /></div>
           <div>
             <div className="text-base font-extrabold text-[#172033]">Taskiva</div>
             <div className="text-[11px] text-[#596275]">Professional booking flow</div>

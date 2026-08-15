@@ -72,7 +72,7 @@ useEffect(() => {
     <div className="min-h-screen bg-[linear-gradient(180deg,#f4f7f5_0%,#edf6f5_100%)] lg:grid lg:grid-cols-[260px_1fr]">
       <aside className="bg-gradient-to-b from-[#172033] to-[#1d4ed8] p-5 text-white">
         <div className="flex items-center gap-3 pb-6">
-          <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-[#2563eb] to-[#1d4ed8] text-lg font-extrabold text-white">T</div>
+          <div className="grid h-11 w-11 place-items-center rounded-2xl  text-lg font-extrabold text-white"><img src="/taskivalogo.png" alt="Taskiva Logo" className="h-11 w-11" /></div>
           <div>
             <div className="text-base font-extrabold">Taskiva</div>
             <div className="text-xs text-white/70">Tasker Dashboard</div>

@@ -86,8 +86,8 @@ export default function SignupPage() {
               to="/"
               className="inline-flex items-center gap-3"
             >
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#6C63FF] text-xl font-black text-white shadow-[0_10px_30px_rgba(108,99,255,0.3)]">
-                T
+              <div className="grid h-12 w-12 place-items-center rounded-2xl  text-xl font-black text-white shadow-[0_10px_30px_rgba(108,99,255,0.3)]">
+               <img src="/taskivalogo.png" alt="Taskiva Logo" className="h-12 w-12" />
               </div>
 
               <div>
